@@ -39,7 +39,3 @@ for i in transcribe-ui transcribe-backend transcribe-worker; do
 	echo "Building Docker image for $i"
 	(cd $i; $docker build -f Dockerfile -t $i:latest .)
 done
-
-# Run!
-docker-compose up -f docker-compose.yml -d
-
