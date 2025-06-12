@@ -1,7 +1,7 @@
 services:
   backend:
     image: transcribe-backend:latest
-    ports: 
+    ports:
       - "8000:8000"
     environment:
       - API_DATABASE_URL
@@ -25,6 +25,7 @@ services:
       - API_DEBUG
       - API_STATIC_FILES
       - API_URL
+      - OIDC_APP_REFRESH_ROUTE
       - OIDC_APP_LOGIN_ROUTE
       - OIDC_APP_LOGOUT_ROUTE
 
@@ -37,3 +38,4 @@ services:
       - API_VERSION=v1
       - API_WORKERS=4
       - HF_WHISPER=true
+      - HF_TOKEN
