@@ -1,3 +1,4 @@
 transcribe-ui
 transcribe-backend
 transcribe-worker
+.env
