@@ -1,41 +1,45 @@
 services:
+  database:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+
   backend:
     image: transcribe-backend:latest
+    depends_on:
+      - database
     ports:
       - "8000:8000"
     environment:
       - API_DATABASE_URL
-      - API_DEBUG
-      - API_DESCRIPTION
-      - API_FILE_STORAGE_DIR=/storage
       - API_PREFIX
-      - API_SECRET_KEY
-      - API_TITLE
       - API_VERSION
+      - API_TITLE
+      - API_DESCRIPTION
+      - API_FILE_STORAGE_DIR
+      - API_SECRET_KEY
+      - API_WORKER_CLIENT_DN
+
       - OIDC_CLIENT_ID
-      - OIDC_SCOPE
       - OIDC_CLIENT_SECRET
       - OIDC_METADATA_URL
+      - OIDC_SCOPE
+      - OIDC_REFRESH_URI
       - OIDC_REDIRECT_URI
-  ui:
+      - OIDC_FRONTEND_URI
+
+  frontend:
     image: transcribe-ui:latest
+    depends_on:
+      - backend
     ports:
       - "8888:8888"
     environment:
-      - API_DEBUG
-      - API_STATIC_FILES
       - API_URL
       - OIDC_APP_REFRESH_ROUTE
       - OIDC_APP_LOGIN_ROUTE
       - OIDC_APP_LOGOUT_ROUTE
-
-  worker:
-    image: transcribe-worker:latest
-    environment:
-      - API_DEBUG
-      - API_BACKEND_URL
-      - API_FILE_STORAGE_DIR=/storage
-      - API_VERSION=v1
-      - API_WORKERS=4
-      - HF_WHISPER=true
-      - HF_TOKEN
